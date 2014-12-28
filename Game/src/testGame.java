@@ -51,7 +51,7 @@ public class testGame extends BasicGame {
         right = new Animation(movementRight, duration, false);
         sprite = right;
         //blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
-		
+		System.out.println("Hola Mundo");
 	}
 
 	@Override

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass" tilewidth="32" tileheight="32">
+  <image source="grass.png" width="128" height="128"/>
+  <tile id="6">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="17" name="rocks" tilewidth="32" tileheight="32">
+  <image source="rocks.png" width="128" height="128"/>
+ </tileset>
+ <layer name="Capa de Patrones 1" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxNj0EKgDAMBCtqQRGrB1tERf//ShOYhRyGNsmwJDWlVKEZp/HxtoDPO2PknYzZyDCHHJ8PRjEWankb+Tt1jyN3Cq68BTK5nrdSe/82HnYozNWX7+6Ft+FGr9D3fV6IN8rTPwdP9+oe5ffManDFGf4Ht7r3A2ZsBeI=
+  </data>
+ </layer>
+</map>

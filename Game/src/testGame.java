@@ -29,7 +29,7 @@ public class testGame extends BasicGame {
         try
         {
             AppGameContainer app = new AppGameContainer(new testGame());
-            app.setDisplayMode(500, 400, false);
+            app.setDisplayMode(600, 400, false);
             app.start();
         }
         catch (SlickException e)
@@ -41,10 +41,10 @@ public class testGame extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException
     {
-        Image [] movementUp = {new Image("data/sprites/player.png")};
-        Image [] movementDown = {new Image("data/sprites/player.png")};
-        Image [] movementLeft = {new Image("data/sprites/player.png")};
-        Image [] movementRight = {new Image("data/sprites/player.png")};
+        Image [] movementUp = {new Image("data/sprites/player.png"), new Image("data/sprites/player.png")};
+        Image [] movementDown = {new Image("data/sprites/player.png"), new Image("data/sprites/player.png")};
+        Image [] movementLeft = {new Image("data/sprites/player.png"), new Image("data/sprites/player.png")};
+        Image [] movementRight = {new Image("data/sprites/player.png"), new Image("data/sprites/player.png")};
         int [] duration = {300, 300};         grassMap = new TiledMap("data/map.tmx");
 
          /*

@@ -41,10 +41,10 @@ public class testGame extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException
     {
-        Image [] movementUp = {new Image("data/sprites/player")};
-        Image [] movementDown = {new Image("data/sprites/player")};
-        Image [] movementLeft = {new Image("data/sprites/player")};
-        Image [] movementRight = {new Image("data/sprites/player")};
+        Image [] movementUp = {new Image("data/sprites/player.png")};
+        Image [] movementDown = {new Image("data/sprites/player.png")};
+        Image [] movementLeft = {new Image("data/sprites/player.png")};
+        Image [] movementRight = {new Image("data/sprites/player.png")};
         int [] duration = {300, 300};         grassMap = new TiledMap("data/map.tmx");
 
          /*

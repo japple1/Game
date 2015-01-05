@@ -4,6 +4,7 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tests.TileMapTest;
 import org.newdawn.slick.tiled.TiledMap;
@@ -11,53 +12,125 @@ import org.newdawn.slick.tiled.TiledMap;
 
 public class testGame extends BasicGame {
 	private TiledMap grassMap;
-	private Animation sprite, up, down, left, right;
-	
-	public testGame() {
-		super ("TestGame");
-	}
-	
-	public static void main(String[] arguments) {
+    private Animation sprite, up, down, left, right;
+    private float x = 34f, y = 34f;
+
+    /** The collision map indicating which tiles block movement - generated based on tile properties */
+    private boolean[][] blocked;
+    private static final int SIZE = 34;
+
+    public testGame()
+    {
+        super("Wizard game");
+    }
+
+    public static void main(String [] arguments)
+    {
         try
         {
-
-           AppGameContainer app = new AppGameContainer(new testGame());
-           app.setDisplayMode(320, 320, false);
-           app.start();
+            AppGameContainer app = new AppGameContainer(new testGame());
+            app.setDisplayMode(500, 400, false);
+            app.start();
         }
         catch (SlickException e)
         {
             e.printStackTrace();
         }
     }
-	
-	@Override
-	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
-		grassMap.render(0, 0);
-		
-	}
 
-	@Override
-	public void init(GameContainer arg0) throws SlickException {
-		grassMap = new TiledMap("data/grassmap.tmx");
-    	Image [] movementUp = {new Image("data/sprites/kazekguy1.png"), new Image("data/kazekguy2.png")};
-		Image [] movementDown = {new Image("data/sprites/kazekguy1.png"), new Image("data/kazekguy2.png")};
-		Image [] movementLeft = {new Image("data/sprites/kazekguy1.png"), new Image("data/kazekguy2.png")};
-		Image [] movementRight = {new Image("data/sprites/kazekguy1.png"), new Image("data/kazekguy2.png")};
-		int [] duration = {300, 300};
-		up = new Animation(movementUp, duration, false);
+    @Override
+    public void init(GameContainer container) throws SlickException
+    {
+        Image [] movementUp = {new Image("data/sprites/player")};
+        Image [] movementDown = {new Image("data/sprites/player")};
+        Image [] movementLeft = {new Image("data/sprites/player")};
+        Image [] movementRight = {new Image("data/sprites/player")};
+        int [] duration = {300, 300};         grassMap = new TiledMap("data/map.tmx");
+
+         /*
+         * false variable means do not auto update the animation.
+         * By setting it to false animation will update only when
+         * the user presses a key.
+         */
+        up = new Animation(movementUp, duration, false);
         down = new Animation(movementDown, duration, false);
         left = new Animation(movementLeft, duration, false);
         right = new Animation(movementRight, duration, false);
+
+        // Original orientation of the sprite. It will look right.
         sprite = right;
-        //blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
-		System.out.println("Hola Mundo");
-	}
 
-	@Override
-	public void update(GameContainer arg0, int arg1) throws SlickException {
-		// TODO Auto-generated method stub
-		
-	}
+        // build a collision map based on tile properties in the TileD map
+        blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 
+       for (int xAxis=0;xAxis<grassMap.getWidth(); xAxis++)
+       {
+            for (int yAxis=0;yAxis<grassMap.getHeight(); yAxis++)
+            {
+                int tileID = grassMap.getTileId(xAxis, yAxis, 0);
+                String value = grassMap.getTileProperty(tileID, "blocked", "false");
+                if ("true".equals(value))
+                {
+                    blocked[xAxis][yAxis] = true;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void update(GameContainer container, int delta) throws SlickException
+    {
+        Input input = container.getInput();
+        if (input.isKeyDown(Input.KEY_UP))
+        {
+            sprite = up;
+            if (!isBlocked(x, y - delta * 0.1f))
+            {
+                sprite.update(delta);
+                // The lower the delta the slowest the sprite will animate.
+                y -= delta * 0.1f;
+            }
+        }
+        else if (input.isKeyDown(Input.KEY_DOWN))
+        {
+            sprite = down;
+            if (!isBlocked(x, y + SIZE + delta * 0.1f))
+            {
+                sprite.update(delta);
+                y += delta * 0.1f;
+            }
+        }
+        else if (input.isKeyDown(Input.KEY_LEFT))
+        {
+            sprite = left;
+            if (!isBlocked(x - delta * 0.1f, y))
+            {
+                sprite.update(delta);
+                x -= delta * 0.1f;
+            }
+        }
+        else if (input.isKeyDown(Input.KEY_RIGHT))
+        {
+            sprite = right;
+            if (!isBlocked(x + SIZE + delta * 0.1f, y))
+            {
+                sprite.update(delta);
+                x += delta * 0.1f;
+            }
+        }
+    }
+
+    public void render(GameContainer container, Graphics g) throws SlickException
+    {
+        grassMap.render(0, 0);
+        sprite.draw((int)x, (int)y);
+    }
+
+    private boolean isBlocked(float x, float y)
+    {
+        int xBlock = (int)x / SIZE;
+        int yBlock = (int)y / SIZE;
+        return blocked[xBlock][yBlock];
+    }
 }
+
